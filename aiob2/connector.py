@@ -70,7 +70,7 @@ class B2Connector():
         self.recommended_part_size = response_json['recommendedPartSize']
 
     async def get(self, path, headers={}):
-        if not self.authorized:
+        if not self.authorized_at:
             raise B2AuthorizationError('Not authorized.')
         url = self.api_url + path
         headers.update({'Authorization': self.auth_token})
@@ -79,7 +79,7 @@ class B2Connector():
 
     async def put(self, path, headers={}, params={},
                   account_id_required=False):
-        if not self.authorized:
+        if not self.authorized_at:
             raise B2AuthorizationError('Not authorized.')
         url = self.api_url + path
         headers.update({'Authorization': self.auth_token})
