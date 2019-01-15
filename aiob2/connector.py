@@ -29,7 +29,7 @@ class B2Connector():
         :param key_id:
         :param application_key:
         """
-        self.api_session = session
+        self.session = session
         self.key_id = None
         self.application_key = None
         self.account_id = None
@@ -53,8 +53,8 @@ class B2Connector():
         return True
 
     async def _authorize(self, key_id, application_key):
-        self.key_id = None
-        self.application_key = None
+        self.key_id = key_id
+        self.application_key = application_key
 
         path = BASE_URL + API.authorize
 
@@ -70,7 +70,7 @@ class B2Connector():
         self.recommended_part_size = response_json['recommendedPartSize']
 
     async def get(self, path, headers={}):
-        if not self.authorized:
+        if not self.authorized_at:
             raise B2AuthorizationError('Not authorized.')
         url = self.api_url + path
         headers.update({'Authorization': self.auth_token})
@@ -79,7 +79,7 @@ class B2Connector():
 
     async def put(self, path, headers={}, params={},
                   account_id_required=False):
-        if not self.authorized:
+        if not self.authorized_at:
             raise B2AuthorizationError('Not authorized.')
         url = self.api_url + path
         headers.update({'Authorization': self.auth_token})

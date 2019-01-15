@@ -1,19 +1,8 @@
 import json
 
 
-API_EXCEPTION_CODES = {
-    400: B2RequestError,
-    401: B2UnauthorizedError,
-    403: B2ForbiddenError,
-    404: B2FileNotFoundError,
-    408: B2RequestTimeoutError,
-    429: B2TooManyRequestsError,
-    500: B2InternalError,
-    503: B2ServiceUnavailableError,
-}
 
-
-class B2B2Exception(Exception):
+class B2Exception(Exception):
     """ Base exception class for the Backblaze API """
 
     @staticmethod
@@ -24,8 +13,8 @@ class B2B2Exception(Exception):
             response_json = await response.json()
             status = int(response_json['status'])
 
-            # Return B2B2Exception if unrecognized status code
-            ErrorClass = API_EXCEPTION_CODES.get(status, B2B2Exception)
+            # Return B2Exception if unrecognized status code
+            ErrorClass = API_EXCEPTION_CODES.get(status, B2Exception)
             return ErrorClass('{} - {}: {}'.format(status,
                                                    response_json['code'],
                                                    response_json['message']))
@@ -126,3 +115,15 @@ class B2AuthorizationError(B2Exception):
 class B2InvalidRequestType(B2Exception):
     """ Request type must be get or post """
     pass
+
+
+API_EXCEPTION_CODES = {
+    400: B2RequestError,
+    401: B2UnauthorizedError,
+    403: B2ForbiddenError,
+    404: B2FileNotFoundError,
+    408: B2RequestTimeoutError,
+    429: B2TooManyRequestsError,
+    500: B2InternalError,
+    503: B2ServiceUnavailableError,
+}

@@ -4,6 +4,7 @@ import aiohttp
 import os
 import json
 
+from .api import API
 
 class B2():
 
