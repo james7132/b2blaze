@@ -29,7 +29,7 @@ class B2Connector():
         :param key_id:
         :param application_key:
         """
-        self.api_session = session
+        self.session = session
         self.key_id = None
         self.application_key = None
         self.account_id = None
@@ -53,8 +53,8 @@ class B2Connector():
         return True
 
     async def _authorize(self, key_id, application_key):
-        self.key_id = None
-        self.application_key = None
+        self.key_id = key_id
+        self.application_key = application_key
 
         path = BASE_URL + API.authorize
 
